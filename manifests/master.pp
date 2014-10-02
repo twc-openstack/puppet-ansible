@@ -17,13 +17,17 @@
 #
 #  include ansible::master
 #
-class ansible::master {
+class ansible::master(
+  $manage_packages = true,
+) {
 
   # Create ansible user
   include ansible::user
 
   # Install Ansible
-  include ansible::install
+  if $manage_packages {
+    include ansible::install
+  }
 
   # Export ansible user public key if fact is defined
   if ( $::ansible_user_key != undef ) {
